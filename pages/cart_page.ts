@@ -1,5 +1,6 @@
 import config from "@env.config";
 import { expect, Locator, Page } from "@playwright/test";
+import { toProductSlug } from "../helpers/utils";
 
 export class CartPage {
   private page: Page;
@@ -18,8 +19,22 @@ export class CartPage {
   }
 
   async assertProductInCart(productName: string): Promise<void> {
-    await expect(this.cartItemName).toBeVisible();
-    await expect(this.cartItemName).toHaveText(productName);
-    
+    const cartItemName = this.cartItemName.getByText(productName, { exact: true });
+
+    await expect(cartItemName).toBeVisible();
+    await expect(cartItemName).toHaveText(productName);
+  }
+
+  async assertProductNotInCart(productName: string): Promise<void> {
+    await expect(this.cartItemName.getByText(productName, { exact: true })).toHaveCount(0);
+  }
+
+  async assertCartQuantity(quantity: number): Promise<void> {
+    await expect(this.cartItemName).toHaveCount(quantity);
+  }
+
+  async removeProductFromCart(productName: string): Promise<void> {
+    const slug = toProductSlug(productName);
+    await this.page.getByTestId(`remove-${slug}`).click();
   }
 }
