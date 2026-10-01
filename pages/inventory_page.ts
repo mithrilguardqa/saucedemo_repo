@@ -6,10 +6,12 @@ import config from "@env.config";
 
 export class InventoryPage extends HeaderPage {
   private inventoryList: Locator;
+  private inventoryItem: Locator;
 
   constructor(page: Page) {
     super(page);
     this.inventoryList = page.getByTestId("inventory-list");
+    this.inventoryItem = page.getByTestId("inventory-item-name");
   }
 
   async assertInventoryPage(): Promise<void> {
@@ -33,6 +35,12 @@ export class InventoryPage extends HeaderPage {
       await expect(product.getByTestId("inventory-item-desc")).toHaveText(item.description);
       await expect(product.getByTestId("inventory-item-price")).toHaveText(item.price);
     }
+  }
+
+  async clickProduct(productName: string): Promise<void> {
+    await this.inventoryItem
+      .filter({ has: this.page.getByText(productName, { exact: true }) })
+      .click();
   }
 
   async sortBy(order: SortBy): Promise<void> {

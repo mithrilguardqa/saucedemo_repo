@@ -1,7 +1,11 @@
 import config from "@env.config";
 import { test } from "@fixtures/fixture";
+import { getRandomProduct } from "../../helpers/utils";
+import { inventoryList } from "../../test_data/inventory_list";
 
 test.describe("Inventory tests", () => {
+  const randomProduct = getRandomProduct(inventoryList);
+
   test.beforeEach(async ({ page }) => {
     await page.goto(`${config.baseUrl}inventory.html`);
   });
@@ -37,6 +41,27 @@ test.describe("Inventory tests", () => {
     await test.step("Sort by price from high to low", async () => {
       await inventoryPage.sortBy("Price (high to low)");
       await inventoryPage.assertSortedBy("Price (high to low)");
+    });
+  });
+
+  test("Verify product details page displays correct product information", async ({
+    inventoryPage,
+    productDetailsPage,
+  }) => {
+    await test.step("Click on a product", async () => {
+      await inventoryPage.clickProduct(randomProduct.name);
+    });
+
+    await test.step("Verify product details page is loaded", async () => {
+      await productDetailsPage.assertProductDetailsPage(
+        randomProduct.name,
+        randomProduct.description,
+        randomProduct.price,
+      );
+    });
+
+    await test.step("Click back to products button", async () => {
+      await productDetailsPage.clickBackToProductsButton();
     });
   });
 });
