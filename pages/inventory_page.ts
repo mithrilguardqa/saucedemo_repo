@@ -1,5 +1,6 @@
 import { expect, Locator, Page } from "@playwright/test";
 import { inventoryList } from "../test_data/inventory_list";
+import { isSorted, type SortBy } from "../helpers/utils";
 
 export class InventoryPage {
   private page: Page;
@@ -29,5 +30,27 @@ export class InventoryPage {
       await expect(product.getByTestId("inventory-item-desc")).toHaveText(item.description);
       await expect(product.getByTestId("inventory-item-price")).toHaveText(item.price);
     }
+  }
+
+  async sortBy(order: SortBy): Promise<void> {
+    await this.page.getByTestId("product-sort-container").click();
+    await this.page.getByTestId("product-sort-container").selectOption(order);
+  }
+
+  async assertSortedBy(order: SortBy): Promise<void> {
+    // If order is "Name A-Z" or "Name Z-A", get the list of names in array
+    const namesList = await this.inventoryList.getByTestId("inventory-item-name").allTextContents();
+
+    // If order is "Price Low to High" or "Price High to Low", get the list of prices in array
+    const pricesList = await this.inventoryList
+      .getByTestId("inventory-item-price")
+      .allTextContents();
+
+    // Convert the list of prices to numbers
+    const pricesNumbers = pricesList.map((price) => Number(price.replace("$", "")));
+
+    const values = order.startsWith("Name") ? namesList : pricesNumbers;
+
+    isSorted(values, order);
   }
 }
