@@ -2,6 +2,7 @@ import { expect, Locator, Page } from "@playwright/test";
 import { inventoryList } from "../test_data/inventory_list";
 import { isSorted, type SortBy, toProductSlug } from "../helpers/utils";
 import { HeaderPage } from "./header_page";
+import config from "@env.config";
 
 export class InventoryPage extends HeaderPage {
   private inventoryList: Locator;
@@ -12,6 +13,7 @@ export class InventoryPage extends HeaderPage {
   }
 
   async assertInventoryPage(): Promise<void> {
+    await expect(this.page).toHaveURL(`${config.baseUrl}inventory.html`);
     await expect(this.page.getByText("Products")).toBeVisible();
     await expect(this.page.getByTestId("product-sort-container")).toBeVisible();
   }

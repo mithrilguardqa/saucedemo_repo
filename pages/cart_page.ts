@@ -6,11 +6,13 @@ export class CartPage {
   private page: Page;
   private cartItemName: Locator;
   private cartPageTitle: Locator;
+  private checkoutButton: Locator;
 
   constructor(page: Page) {
     this.page = page;
     this.cartItemName = page.getByTestId("inventory-item-name");
     this.cartPageTitle = page.getByTestId("title");
+    this.checkoutButton = page.getByTestId("checkout");
   }
 
   async assertCartPageIsLoaded(): Promise<void> {
@@ -36,5 +38,9 @@ export class CartPage {
   async removeProductFromCart(productName: string): Promise<void> {
     const slug = toProductSlug(productName);
     await this.page.getByTestId(`remove-${slug}`).click();
+  }
+
+  async clickCheckout(): Promise<void> {
+    await this.checkoutButton.click();
   }
 }

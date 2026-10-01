@@ -3,7 +3,7 @@ import { test } from "@fixtures/fixture";
 import { getRandomProduct } from "../../helpers/utils";
 import { inventoryList } from "../../test_data/inventory_list";
 
-test.describe("Cart", () => {
+test.describe("Cart behavior tests", () => {
   const randomProduct = getRandomProduct(inventoryList);
   const firstProduct = inventoryList[0];
   const secondProduct = inventoryList[1];
