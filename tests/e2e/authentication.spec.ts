@@ -12,10 +12,15 @@ test.describe("Authentication and login flow", () => {
   });
 
   test("Verify user can logout successfully", async ({ loginPage, burgerNavPage }) => {
-    await loginPage.login(config.standardUser.username, config.standardUser.password);
-    await loginPage.assertLogin();
-    await burgerNavPage.logout();
-    await loginPage.assertLogout();
+    await test.step("Login and assert user is logged in", async () => {
+      await loginPage.login(config.standardUser.username, config.standardUser.password);
+      await loginPage.assertLogin();
+    });
+
+    await test.step("Logout and assert user is logged out", async () => {
+      await burgerNavPage.logout();
+      await loginPage.assertLogout();
+    });
   });
 
   test("Verify locked_user cannot login", async ({ loginPage }) => {
