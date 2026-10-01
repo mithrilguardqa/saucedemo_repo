@@ -1,4 +1,9 @@
 import { expect } from "@playwright/test";
+import { InventoryItem } from "../test_data/inventory_list";
+
+export const getRandomProduct = (products: InventoryItem[]): InventoryItem => {
+  return products[Math.floor(Math.random() * products.length)];
+};
 
 export type SortBy =
   | "Name (A to Z)"
