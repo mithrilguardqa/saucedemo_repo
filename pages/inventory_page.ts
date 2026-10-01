@@ -1,13 +1,13 @@
 import { expect, Locator, Page } from "@playwright/test";
 import { inventoryList } from "../test_data/inventory_list";
-import { isSorted, type SortBy } from "../helpers/utils";
+import { isSorted, type SortBy, toProductSlug } from "../helpers/utils";
+import { HeaderPage } from "./header_page";
 
-export class InventoryPage {
-  private page: Page;
+export class InventoryPage extends HeaderPage {
   private inventoryList: Locator;
 
   constructor(page: Page) {
-    this.page = page;
+    super(page);
     this.inventoryList = page.getByTestId("inventory-list");
   }
 
@@ -17,6 +17,7 @@ export class InventoryPage {
   }
 
   async assertInventoryItems(): Promise<void> {
+    //Chaining locators
     const products = this.inventoryList.getByTestId("inventory-item");
 
     for (const item of inventoryList) {
@@ -52,5 +53,19 @@ export class InventoryPage {
     const values = order.startsWith("Name") ? namesList : pricesNumbers;
 
     isSorted(values, order);
+  }
+
+  async addProductToCart(productName: string): Promise<void> {
+    // Add cart button locators are in the format - data-test="add-to-cart-sauce-labs-backpack"
+    const slug = toProductSlug(productName);
+
+    // Click the add to cart button on the desired product
+    await this.inventoryList.getByTestId(`add-to-cart-${slug}`).click();
+  }
+
+  async assertProductAddedToCart(productName: string): Promise<void> {
+    // Assert the remove button is visible
+    const slug = toProductSlug(productName);
+    await expect(this.inventoryList.getByTestId(`remove-${slug}`)).toBeVisible();
   }
 }

@@ -1,5 +1,10 @@
 import { expect } from "@playwright/test";
-export type SortBy = "Name (A to Z)" | "Name (Z to A)" | "Price (low to high)" | "Price (high to low)";
+
+export type SortBy =
+  | "Name (A to Z)"
+  | "Name (Z to A)"
+  | "Price (low to high)"
+  | "Price (high to low)";
 
 export function isSorted(values: string[] | number[], order: SortBy): void {
   const receivedValues = [...values];
@@ -24,4 +29,20 @@ export function isSorted(values: string[] | number[], order: SortBy): void {
   }
 
   expect(receivedValues).toEqual(expectedValues);
+}
+
+export const generateRandomString = (
+  length?: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13,
+): string => {
+  const timestampString: number = Math.floor(Date.now() / 1000) + Math.floor(Math.random() * 1000);
+
+  // If length is undefined, default to 13
+  const validLength: number = length ? length : 13;
+
+  // Return the last `validLength` characters of the timestamp
+  return timestampString.toString().slice(-validLength);
+};
+
+export function toProductSlug(productName: string): string {
+  return productName.toLowerCase().replace(/ /g, "-");
 }

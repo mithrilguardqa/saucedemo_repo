@@ -3,7 +3,7 @@ import { test } from "@fixtures/fixture";
 
 test.describe("Inventory tests", () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto(config.baseUrl + "inventory.html");
+    await page.goto(`${config.baseUrl}inventory.html`);
   });
 
   test("Verify all inventory items are present and displayed correctly", async ({
