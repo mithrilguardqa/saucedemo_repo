@@ -4,6 +4,8 @@ import dotenv from "dotenv";
 import path from "path";
 dotenv.config({ path: path.resolve(__dirname, ".env") });
 
+const allureResultsDir = path.resolve(__dirname, "allure-results");
+
 export default defineConfig({
   testDir: "./tests",
   globalSetup: require.resolve("./global-setup"),
@@ -12,11 +14,17 @@ export default defineConfig({
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
   workers: process.env.CI ? 1 : undefined,
-  reporter: "html",
+  reporter: [
+    ["list"],
+    ["html", { open: "never" }],
+    ["./reporters/clean_allure_results.ts", { resultsDir: allureResultsDir }],
+    ["allure-playwright", { resultsDir: allureResultsDir, detail: false }],
+  ],
   use: {
     baseURL: config.baseUrl,
     storageState: ".auth/login.json",
-    trace: "on-first-retry",
+    trace: "retain-on-failure",
+    screenshot: "only-on-failure",
     testIdAttribute: "data-test",
   },
 

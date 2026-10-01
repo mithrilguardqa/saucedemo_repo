@@ -1,4 +1,3 @@
-import config from "@env.config";
 import { expect, Locator, Page } from "@playwright/test";
 
 export class ProductDetailsPage {
@@ -25,7 +24,8 @@ export class ProductDetailsPage {
     productDescription: string,
     productPrice: string,
   ): Promise<void> {
-    await expect(this.page.getByText(productName)).toBeVisible();
+    await expect(this.backToProductsButton).toBeVisible();
+    await expect(this.inventoryItemName).toHaveText(productName);
     await expect(this.inventoryItemDescription).toHaveText(productDescription);
     await expect(this.inventoryItemPrice).toHaveText(productPrice);
   }

@@ -1,6 +1,6 @@
 import config from "@env.config";
 import { expect, Locator, Page } from "@playwright/test";
-import { priceParsing, calculateTax } from "../helpers/pricing";
+import { priceParsing, calculateTax, roundMoney } from "../helpers/pricing";
 
 export class SecondCheckoutPage {
   private page: Page;
@@ -32,15 +32,19 @@ export class SecondCheckoutPage {
   }
 
   async assertPricing(itemPrice: string): Promise<void> {
+    // Get expected subtotal from the product price string and parse with priceParsing function
     const expectedSubtotal = priceParsing(itemPrice);
 
+    // Get actual subtotal from the page locators and parse with priceParsing function
     const subtotal = priceParsing(await this.subTotal.innerText());
     const tax = priceParsing(await this.tax.innerText());
     const total = priceParsing(await this.total.innerText());
 
+    // Calculate expected tax and total
     const expectedTax = calculateTax(expectedSubtotal);
-    const expectedTotal = expectedSubtotal + expectedTax;
+    const expectedTotal = roundMoney(expectedSubtotal + expectedTax);
 
+    // Assert expected and actual values
     expect(subtotal).toBe(expectedSubtotal);
     expect(tax).toBe(expectedTax);
     expect(total).toBe(expectedTotal);

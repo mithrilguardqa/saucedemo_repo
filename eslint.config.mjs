@@ -44,6 +44,8 @@ export default tseslint.config(
       "qa-candidate-test-main/**",
       "test-results/**",
       "playwright-report/**",
+      "allure-results/**",
+      "allure-report/**",
     ],
   },
 );
