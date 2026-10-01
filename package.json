@@ -1,0 +1,29 @@
+{
+  "name": "pharma_interview",
+  "version": "1.0.0",
+  "description": "BGO Software Interview Project",
+  "main": "index.js",
+  "scripts": {
+    "test": "npx playwright test",
+    "test/ui": "npx playwright test tests --ui",
+    "test/headed": "npx playwright test tests --headed",
+    "test/debug": "npx playwright test tests --debug"
+  },
+  "keywords": [],
+  "author": "Momchil Kambarev",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "@eslint/js": "^9.39.5",
+    "@playwright/test": "^1.63.0",
+    "@types/node": "^26.6.3",
+    "eslint": "^9.39.5",
+    "eslint-plugin-import": "^2.32.0",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.71.0"
+  },
+  "dependencies": {
+    "allure": "^3.19.1",
+    "dotenv": "^18.0.4"
+  }
+}

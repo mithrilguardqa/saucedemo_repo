@@ -1,0 +1,9 @@
+export { BurgerNavPage } from "@pages/burger_nav_page";
+export { CartPage } from "@pages/cart_page";
+export { CheckoutCompletePage } from "@pages/checkout_complete_page";
+export { FirstCheckoutPage } from "@pages/checkout_page_one";
+export { SecondCheckoutPage } from "@pages/checkout_page_two";
+export { HeaderPage } from "@pages/header_page";
+export { InventoryPage } from "@pages/inventory_page";
+export { LoginPage } from "@pages/login_page";
+export { ProductDetailsPage } from "@pages/product_details_page";

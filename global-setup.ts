@@ -1,0 +1,25 @@
+export const config = {
+  compilerOptions: {
+    ignoreDeprecations: "6.0",
+    baseUrl: "./",
+    paths: {
+      "@pages/*": ["pages/*"],
+      "@env.config": ["./env.config.ts"],
+    },
+    target: "ES2022",
+    module: "NodeNext",
+    lib: ["DOM", "ES6"],
+    resolveJsonModule: true,
+    moduleResolution: "NodeNext",
+    strict: true,
+    noImplicitThis: true,
+    esModuleInterop: true,
+    skipLibCheck: true,
+    forceConsistentCasingInFileNames: true,
+    allowJs: true,
+    checkJs: true,
+    noFallthroughCasesInSwitch: true,
+    noEmit: true,
+  },
+  exclude: ["node_modules"],
+};
