@@ -1,4 +1,4 @@
-import envConfig from "@env.config";
+import config from "@env.config";
 import { Page, Locator, expect } from "@playwright/test";
 
 export class LoginPage {
@@ -21,13 +21,13 @@ export class LoginPage {
   }
 
   async assertLogin() {
-    await expect(this.page).toHaveURL(envConfig.baseUrl + "inventory.html");
+    await expect(this.page).toHaveURL(config.baseUrl + "inventory.html");
     await expect(this.page.getByText("Products")).toBeVisible();
     await expect(this.page.getByTestId("product-sort-container")).toBeVisible();
   }
 
   async assertLogout() {
-    await expect(this.page).toHaveURL(envConfig.baseUrl);
+    await expect(this.page).toHaveURL(config.baseUrl);
     await expect(this.loginButton).toBeVisible();
   }
 

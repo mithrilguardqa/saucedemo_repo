@@ -1,21 +1,39 @@
-import { PlaywrightTestConfig } from "@playwright/test";
-import { testAccounts } from "./test_data/accounts";
+import path from "path";
+import dotenv from "dotenv";
 
-interface TestConfig extends PlaywrightTestConfig {
-  baseUrl: string;
-  accounts: typeof testAccounts;
-}
+dotenv.config({ path: path.resolve(__dirname, ".env") });
 
-const devTestConfig: TestConfig = {
-  baseUrl: "https://www.saucedemo.com/",
-  accounts: testAccounts,
+const password = process.env.PASSWORD!;
+
+export const testAccounts = {
+  standardUser: {
+    username: "standard_user",
+    password,
+  },
+  lockedUser: {
+    username: "locked_out_user",
+    password,
+  },
+  problemUser: {
+    username: "problem_user",
+    password,
+  },
+  performanceGlitchUser: {
+    username: "performance_glitch_user",
+    password,
+  },
+} as const;
+
+const baseUrls = {
+  dev: "https://www.saucedemo.com/",
+  prod: "https://www.prod.saucedemo.com/",
+} as const;
+
+const environment = process.env.TEST_ENV === "prod" ? "prod" : "dev";
+
+const config = {
+  baseUrl: baseUrls[environment],
+  ...testAccounts,
 };
-
-const prodTestConfig: TestConfig = {
-  baseUrl: "https://www.Prod.saucedemo.com/",
-  accounts: testAccounts,
-};
-
-const config: TestConfig = process.env.TEST_ENV === "prod" ? prodTestConfig : devTestConfig;
 
 export default config;
